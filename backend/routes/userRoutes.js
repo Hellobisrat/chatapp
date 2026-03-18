@@ -1,7 +1,6 @@
 import express from 'express'
-import { sign } from 'jsonwebtoken';
-import { protectRoute } from '../middleware/auth';
-import { login,signup,updateProfile,checkAuth } from '../controllers/userController';
+import { protectRoute } from '../middleware/auth.js';
+import { login,signup,updateProfile,checkAuth } from '../controllers/userController.js';
 
 
 const userRouter =  express.Router();
