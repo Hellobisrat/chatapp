@@ -74,20 +74,25 @@ export const AuthProvider = ({children})=>{
               toast.error(error.message)
           }
     }
-    const connectSocket =(userData)=>{
-         if(!userData || socket?.connected) return;
-         const newSocket = io(backendUrl,{
-          query: {
-            userId: userData._id,
-          }
-         })
-         newSocket.connect();
-         setSocket(newSocket)
+    const connectSocket = (userData) => {
+  if (!userData || socket?.connected) return;
 
-         newSocket.on("getOnlineUsers",(usersIds)=>{
-                  setOnlineUsers(usersIds)
-         })
+  const newSocket = io(backendUrl, {
+    query: {
+      userId: userData._id,
     }
+  });
+
+  newSocket.connect();
+  setSocket(newSocket);
+
+  // Tell backend this user is online
+  newSocket.emit("userConnected", userData._id);
+
+  newSocket.on("getOnlineUsers", (usersIds) => {
+    setOnlineUsers(usersIds);
+  });
+};
 
    useEffect(() => {
   if (token) {
